@@ -12,10 +12,12 @@ Cargo.lock
 *.swp
 *.swo
 *~
-/plugins/*
-!/plugins/.gitkeep
-!/plugins/utils_plugin
-!/plugins/voicetemp_plugin
+# Plugins (ignore compiled files but keep source dirs)
+/plugins/*.dll
+/plugins/*.so
+/plugins/*.dylib
+# !/plugins/.gitkeep # Uncomment if you want to keep an empty plugins dir in git
+
 # OS files
 .DS_Store
 Thumbs.db
