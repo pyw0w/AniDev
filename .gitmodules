@@ -4,3 +4,6 @@
 [submodule "anicore"]
 	path = anicore
 	url = https://github.com/pyw0w/AniCore
+[submodule "docs"]
+	path = docs
+	url = https://github.com/pyw0w/AniDocs.git
