@@ -3,6 +3,7 @@ members = [
     "anicore",
     "aniapi",
     "plugins/utils_plugin",
+    "plugins/voicetemp_plugin"
 ]
 resolver = "2"
 

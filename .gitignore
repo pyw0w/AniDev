@@ -15,6 +15,7 @@ Cargo.lock
 /plugins/*
 !/plugins/.gitkeep
 !/plugins/utils_plugin
+!/plugins/voicetemp_plugin
 # OS files
 .DS_Store
 Thumbs.db

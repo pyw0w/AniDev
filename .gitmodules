@@ -10,3 +10,6 @@
 [submodule "plugins/utils_plugin"]
 	path = plugins/utils_plugin
 	url = https://github.com/pyw0w/AniUtils.git
+[submodule "plugins/voicetemp_plugin"]
+	path = plugins/voicetemp_plugin
+	url = https://github.com/pyw0w/AniVoiceTemp
