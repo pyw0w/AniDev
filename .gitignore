@@ -12,7 +12,9 @@ Cargo.lock
 *.swp
 *.swo
 *~
-/plugins/
+/plugins/*
+!/plugins/.gitkeep
+!/plugins/utils_plugin
 # OS files
 .DS_Store
 Thumbs.db

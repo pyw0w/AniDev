@@ -7,3 +7,6 @@
 [submodule "docs"]
 	path = docs
 	url = https://github.com/pyw0w/AniDocs.git
+[submodule "plugins/utils_plugin"]
+	path = plugins/utils_plugin
+	url = https://github.com/pyw0w/AniUtils.git
