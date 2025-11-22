@@ -3,6 +3,7 @@ members = [
     "anicore",
     "aniapi",
     "aniruntime",
+    "anidashboard",
     "plugins/utils_plugin",
     "plugins/voicetemp_plugin"
 ]

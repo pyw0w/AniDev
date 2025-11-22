@@ -16,3 +16,6 @@
 [submodule "aniruntime"]
 	path = aniruntime
 	url = https://github.com/pyw0w/AniRuntime.git
+[submodule "anidashboard"]
+	path = anidashboard
+	url = https://github.com/pyw0w/AniDashBoard
