@@ -1,0 +1,6 @@
+[submodule "aniapi"]
+	path = aniapi
+	url = https://github.com/pyw0w/AniApi
+[submodule "anicore"]
+	path = anicore
+	url = https://github.com/pyw0w/AniCore
