@@ -2,7 +2,7 @@
 members = [
     "anicore",
     "aniapi",
-    "plugins/ping_plugin",
+    "plugins/utils_plugin",
 ]
 resolver = "2"
 
