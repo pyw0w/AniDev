@@ -1,48 +1,14 @@
 #!/bin/bash
 
-# Определение цветов
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # Без цвета
+# Собираем всё
+cargo build
 
-echo "========================================"
-echo "Построение проекта AniDev"
-echo "========================================"
-echo ""
+# Создаем папку plugins если нет
+mkdir -p plugins
 
-# Проверяем, был ли передан параметр (release/debug)
-BUILD_MODE="debug"
-if [ "$1" = "release" ]; then
-    BUILD_MODE="release"
-    echo "Режим сборки: Release"
-else
-    echo "Режим сборки: Debug (используйте './build.sh release' для сборки релизной версии)"
-fi
+# Копируем библиотеки
+# На Linux это будут .so файлы, на Mac .dylib
+cp target/debug/libutils_plugin.so plugins/utils_plugin.so 2>/dev/null || cp target/debug/utils_plugin.dll plugins/ 2>/dev/null
+cp target/debug/libvoicetemp_plugin.so plugins/voicetemp_plugin.so 2>/dev/null || cp target/debug/voicetemp_plugin.dll plugins/ 2>/dev/null
 
-echo ""
-echo "Начинается сборка..."
-echo ""
-
-# Выполняем сборку
-if [ "$BUILD_MODE" = "release" ]; then
-    cargo build --release
-else
-    cargo build
-fi
-
-# Проверяем результат сборки
-if [ $? -eq 0 ]; then
-    echo ""
-    echo -e "${GREEN}========================================"
-    echo "Сборка успешно завершена!"
-    echo -e "========================================${NC}"
-    exit 0
-else
-    echo ""
-    echo -e "${RED}========================================"
-    echo "Сборка завершилась ошибкой!"
-    echo -e "========================================${NC}"
-    exit 1
-fi
-
+echo "Build complete. Plugins copied to ./plugins/"
