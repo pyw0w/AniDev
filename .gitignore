@@ -18,6 +18,8 @@ Cargo.lock
 /plugins/*.dylib
 # !/plugins/.gitkeep # Uncomment if you want to keep an empty plugins dir in git
 
+/plugins/test_plugin
+
 /config/
 
 # OS files

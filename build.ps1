@@ -109,7 +109,7 @@ foreach ($pluginDir in $pluginDirs) {
         }
         
         # Копирование DLL файла
-        $sourceFile = Join-Path "target" $Mode "$pluginName.dll"
+        $sourceFile = Join-Path (Join-Path "target" $Mode) "$pluginName.dll"
         $destFile = Join-Path "plugins" "$pluginName.dll"
         
         if (Test-Path $sourceFile) {
