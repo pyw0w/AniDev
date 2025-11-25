@@ -19,3 +19,6 @@
 [submodule "anidashboard"]
 	path = anidashboard
 	url = https://github.com/pyw0w/AniDashBoard
+[submodule "plugins/news_plugin"]
+	path = plugins/news_plugin
+	url = https://github.com/pyw0w/AniNews
