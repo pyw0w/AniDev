@@ -26,3 +26,4 @@ Cargo.lock
 .DS_Store
 Thumbs.db
 
+.cursor/rules/code-rules.mdc
