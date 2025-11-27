@@ -19,6 +19,7 @@ Cargo.lock
 # !/plugins/.gitkeep # Uncomment if you want to keep an empty plugins dir in git
 
 /plugins/test_plugin
+/plugins/test_service
 
 /config/
 
@@ -26,4 +27,4 @@ Cargo.lock
 .DS_Store
 Thumbs.db
 
-.cursor/rules/code-rules.mdc
+.cursor/

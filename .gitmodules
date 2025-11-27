@@ -22,3 +22,6 @@
 [submodule "plugins/news_plugin"]
 	path = plugins/news_plugin
 	url = https://github.com/pyw0w/AniNews
+[submodule "plugins/games_plugin"]
+	path = plugins/games_plugin
+	url = https://github.com/pyw0w/AniGames

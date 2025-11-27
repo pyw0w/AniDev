@@ -7,7 +7,8 @@ members = [
     "plugins/utils_plugin",
     "plugins/voicetemp_plugin",
     "plugins/test_plugin",
-    "plugins/news_plugin"
+    "plugins/test_service",
+    "plugins/games_plugin"
 ]
 resolver = "2"
 

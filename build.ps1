@@ -49,7 +49,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host ""
-Write-Host "Сборка завершена успешно. Копирование плагинов..." -ForegroundColor Green
+Write-Host "Сборка завершена успешно. Копирование плагинов и сервисов..." -ForegroundColor Green
 Write-Host ""
 
 # Создание директории plugins если отсутствует
@@ -57,81 +57,113 @@ if (-not (Test-Path "plugins")) {
     New-Item -ItemType Directory -Path "plugins" | Out-Null
 }
 
-# Автоматическое определение плагинов
-$pluginCount = 0
-$pluginDirs = Get-ChildItem -Path "plugins" -Directory -ErrorAction SilentlyContinue
-
-foreach ($pluginDir in $pluginDirs) {
-    $cargoToml = Join-Path $pluginDir.FullName "Cargo.toml"
+# Функция для копирования модулей (плагинов или сервисов)
+function Copy-Module {
+    param(
+        [string]$ModuleType,  # "plugin" or "service"
+        [string]$Suffix        # "_plugin" or "_service"
+    )
     
-    if (Test-Path $cargoToml) {
-        $pluginLibName = $null
-        $pluginPackageName = $null
-        $inLibSection = $false
+    $moduleCount = 0
+    $moduleDirs = Get-ChildItem -Path "plugins" -Directory -ErrorAction SilentlyContinue
+
+    foreach ($moduleDir in $moduleDirs) {
+        # Проверяем что директория содержит нужный суффикс
+        if (-not $moduleDir.Name.Contains($Suffix)) {
+            continue
+        }
         
-        # Чтение и парсинг Cargo.toml
-        $lines = Get-Content $cargoToml
+        $cargoToml = Join-Path $moduleDir.FullName "Cargo.toml"
         
-        foreach ($line in $lines) {
-            $trimmedLine = $line.Trim()
+        if (Test-Path $cargoToml) {
+            $moduleLibName = $null
+            $modulePackageName = $null
+            $inLibSection = $false
             
-            # Проверка на начало секции [lib]
-            if ($trimmedLine -eq "[lib]") {
-                $inLibSection = $true
-                continue
-            }
+            # Чтение и парсинг Cargo.toml
+            $lines = Get-Content $cargoToml
             
-            # Проверка на начало секции [package]
-            if ($trimmedLine -eq "[package]") {
-                $inLibSection = $false
-                continue
-            }
-            
-            # Поиск name = "..."
-            if ($trimmedLine -match '^\s*name\s*=\s*"([^"]+)"') {
-                if ($inLibSection) {
-                    $pluginLibName = $matches[1]
-                } else {
-                    $pluginPackageName = $matches[1]
+            foreach ($line in $lines) {
+                $trimmedLine = $line.Trim()
+                
+                # Проверка на начало секции [lib]
+                if ($trimmedLine -eq "[lib]") {
+                    $inLibSection = $true
+                    continue
+                }
+                
+                # Проверка на начало секции [package]
+                if ($trimmedLine -eq "[package]") {
+                    $inLibSection = $false
+                    continue
+                }
+                
+                # Поиск name = "..."
+                if ($trimmedLine -match '^\s*name\s*=\s*"([^"]+)"') {
+                    if ($inLibSection) {
+                        $moduleLibName = $matches[1]
+                    } else {
+                        $modulePackageName = $matches[1]
+                    }
                 }
             }
-        }
-        
-        # Определение имени плагина
-        if ($pluginLibName) {
-            $pluginName = $pluginLibName
-        } elseif ($pluginPackageName) {
-            # Заменяем дефисы на подчеркивания
-            $pluginName = $pluginPackageName -replace '-', '_'
-        } else {
-            # Используем имя директории как fallback
-            $pluginName = $pluginDir.Name
-        }
-        
-        # Копирование DLL файла
-        $sourceFile = Join-Path (Join-Path "target" $Mode) "$pluginName.dll"
-        $destFile = Join-Path "plugins" "$pluginName.dll"
-        
-        if (Test-Path $sourceFile) {
-            Copy-Item -Path $sourceFile -Destination $destFile -Force
-            Write-Host "[OK] Скопирован: $pluginName.dll" -ForegroundColor Green
-            $pluginCount++
-        } else {
-            Write-Host "[ПРЕДУПРЕЖДЕНИЕ] Файл не найден: $sourceFile" -ForegroundColor Yellow
+            
+            # Определение имени модуля
+            if ($moduleLibName) {
+                $moduleName = $moduleLibName
+            } elseif ($modulePackageName) {
+                # Заменяем дефисы на подчеркивания
+                $moduleName = $modulePackageName -replace '-', '_'
+            } else {
+                # Используем имя директории как fallback
+                $moduleName = $moduleDir.Name
+            }
+            
+            # Проверка, что имя модуля содержит правильный суффикс
+            if (-not $moduleName.EndsWith($Suffix)) {
+                Write-Host "[ПРЕДУПРЕЖДЕНИЕ] Имя модуля '$moduleName' не содержит суффикс '$Suffix'. Пропускаем." -ForegroundColor Yellow
+                continue
+            }
+            
+            # Копирование DLL файла
+            $sourceFile = Join-Path (Join-Path "target" $Mode) "$moduleName.dll"
+            $destFile = Join-Path "plugins" "$moduleName.dll"
+            
+            if (Test-Path $sourceFile) {
+                Copy-Item -Path $sourceFile -Destination $destFile -Force
+                Write-Host "[OK] Скопирован $ModuleType : $moduleName.dll" -ForegroundColor Green
+                $moduleCount++
+            } else {
+                Write-Host "[ПРЕДУПРЕЖДЕНИЕ] Файл не найден: $sourceFile" -ForegroundColor Yellow
+                Write-Host "       Ожидаемое имя файла должно содержать суффикс '$Suffix'" -ForegroundColor Gray
+            }
         }
     }
+    
+    return $moduleCount
 }
 
+# Копирование сервисов
+$serviceCount = Copy-Module -ModuleType "сервис" -Suffix "_service"
+
+# Копирование плагинов
+$pluginCount = Copy-Module -ModuleType "плагин" -Suffix "_plugin"
+
 Write-Host ""
-if ($pluginCount -gt 0) {
+if ($pluginCount -gt 0 -or $serviceCount -gt 0) {
     Write-Host "========================================" -ForegroundColor Cyan
     Write-Host "Сборка успешно завершена!" -ForegroundColor Green
-    Write-Host "Скопировано плагинов: $pluginCount" -ForegroundColor Green
+    if ($pluginCount -gt 0) {
+        Write-Host "Скопировано плагинов: $pluginCount" -ForegroundColor Green
+    }
+    if ($serviceCount -gt 0) {
+        Write-Host "Скопировано сервисов: $serviceCount" -ForegroundColor Green
+    }
     Write-Host "========================================" -ForegroundColor Cyan
     exit 0
 } else {
     Write-Host "========================================" -ForegroundColor Yellow
-    Write-Host "Сборка завершена, но плагины не найдены!" -ForegroundColor Yellow
+    Write-Host "Сборка завершена, но плагины и сервисы не найдены!" -ForegroundColor Yellow
     Write-Host "========================================" -ForegroundColor Yellow
     exit 0
 }
