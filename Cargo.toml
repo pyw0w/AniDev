@@ -7,7 +7,8 @@ members = [
     "anidashboard",
     "plugins/utils_plugin",
     "plugins/voicetemp_plugin",
-    "plugins/games_plugin"
+    "plugins/games_plugin",
+    "plugins/anime_plugin"
 ]
 resolver = "2"
 
