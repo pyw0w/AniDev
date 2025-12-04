@@ -25,3 +25,6 @@
 [submodule "plugins/games_plugin"]
 	path = plugins/games_plugin
 	url = https://github.com/pyw0w/AniGames
+[submodule "anisystemd"]
+	path = anisystemd
+	url = https://github.com/pyw0w/AniSystemd
