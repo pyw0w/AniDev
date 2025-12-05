@@ -28,3 +28,6 @@
 [submodule "anisystemd"]
 	path = anisystemd
 	url = https://github.com/pyw0w/AniSystemd
+[submodule "plugins/anime_plugin"]
+	path = plugins/anime_plugin
+	url = https://github.com/pyw0w/AniAnime
