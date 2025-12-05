@@ -28,3 +28,6 @@
 [submodule "anisystemd"]
 	path = anisystemd
 	url = https://github.com/pyw0w/AniSystemd
+[submodule "anibackend"]
+	path = anibackend
+	url = https://github.com/pyw0w/AniBackend
