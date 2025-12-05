@@ -31,3 +31,6 @@
 [submodule "anibackend"]
 	path = anibackend
 	url = https://github.com/pyw0w/AniBackend
+[submodule "plugins/anime_plugin"]
+	path = plugins/anime_plugin
+	url = https://github.com/pyw0w/AniAnime
